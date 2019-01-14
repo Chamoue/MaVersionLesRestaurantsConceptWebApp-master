@@ -50,12 +50,17 @@ public class LoginActivity extends AppCompatActivity {
             if (loginCheck()) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 this.courrielEditText.setError(null);
+                this.setCurrentUser();
                 startActivity(intent);
             }
             else {
-                this.courrielEditText.setError("Cet utilisateur n'existe pas!");
+                this.courrielEditText.setError("Cette combinaison courriel/mot de passe n'existe pas!");
             }
         }
+    }
+
+    private void setCurrentUser() {
+        DataBase.getInstance().setCurrentUser(DataBase.getInstance().getUser(new Courriel(this.courrielEditText.getText().toString())));
     }
 
 }

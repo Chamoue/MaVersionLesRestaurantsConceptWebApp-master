@@ -19,25 +19,47 @@ public class DataBase {
     private CompteUsager currentUser;
     private boolean loggedIn;
     private boolean adminMode;
+    private List<Commande> currentOrders;
 
     private DataBase() {
         //Singleton
         this.compteUsagers = new ArrayList<>();
         this.menu = new Menu();
         this.commande = new Commande();
+        this.currentOrders= new ArrayList<>();
+    }
+
+    public void addToAcceptedOrdersList(Commande commande) {
+        this.currentOrders.add(commande);
+    }
+
+    public void removeFromAcceptedOrdersList(Commande commande) {
+        this.currentOrders.remove(commande);
+    }
+
+    public void clearAcceptedOrderList() {
+        this.currentOrders = new ArrayList<>();
+    }
+
+    public boolean isAdminModeEnabled() {
+        return adminMode;
+    }
+
+    public void addAdminAccount() {
+        this.addUser(new Courriel("gerant"), new Password("gerant"), "gerant", "gerant");
     }
 
     public void setCurrentUser(CompteUsager compteUsager) {
         this.currentUser=compteUsager;
         this.loggedIn=true;
+        if (compteUsager.getCourriel().getCourriel().equals("gerant")){
+            this.adminMode=true;
+        }
     }
 
     public CompteUsager getUser(Courriel courriel){
         for (CompteUsager comptes : this.compteUsagers) {
             if (comptes.getCourriel().getCourriel().equals(courriel.getCourriel())){
-                if (comptes.getCourriel().getCourriel().equals("gerant")) {
-                    this.adminMode=true;
-                }
                 return comptes;
             }
         }
@@ -54,6 +76,10 @@ public class DataBase {
         this.adminMode=false;
     }
 
+    public List<Commande> getCurrentOrders(){
+        return this.currentOrders;
+    }
+
     public void addToOrder(Mets mets) {
         this.commande.addToOrder(mets);
     }
@@ -68,7 +94,9 @@ public class DataBase {
 
     public static DataBase getInstance() {
         if (instance == null) {
-            return new DataBase();
+            DataBase dataBase = new DataBase();
+            dataBase.addAdminAccount();
+            return dataBase;
         }
         else {
             return instance;
