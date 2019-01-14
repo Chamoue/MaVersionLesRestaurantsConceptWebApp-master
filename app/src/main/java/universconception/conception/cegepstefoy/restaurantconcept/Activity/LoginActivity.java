@@ -36,7 +36,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public boolean validations() {
-        //TODO
+        //TODO ?
+
         return true;
     }
 
@@ -48,10 +49,11 @@ public class LoginActivity extends AppCompatActivity {
         if (validations()) {
             if (loginCheck()) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                this.courrielEditText.setError(null);
                 startActivity(intent);
             }
             else {
-                this.passwordEditText.setHint("Shit Happened");
+                this.courrielEditText.setError("Cet utilisateur n'existe pas!");
             }
         }
     }

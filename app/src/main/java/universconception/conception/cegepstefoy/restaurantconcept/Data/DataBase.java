@@ -3,21 +3,67 @@ package universconception.conception.cegepstefoy.restaurantconcept.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+import universconception.conception.cegepstefoy.restaurantconcept.Model.Commande;
 import universconception.conception.cegepstefoy.restaurantconcept.Model.CompteUsager;
 import universconception.conception.cegepstefoy.restaurantconcept.Model.Courriel;
 import universconception.conception.cegepstefoy.restaurantconcept.Model.Menu;
+import universconception.conception.cegepstefoy.restaurantconcept.Model.Mets;
 import universconception.conception.cegepstefoy.restaurantconcept.Model.Password;
 
 public class DataBase {
 
     private static final DataBase instance = new DataBase();
     private  List<CompteUsager> compteUsagers;
+    private Commande commande;
     private  Menu menu;
+    private CompteUsager currentUser;
+    private boolean loggedIn;
+    private boolean adminMode;
 
     private DataBase() {
         //Singleton
         this.compteUsagers = new ArrayList<>();
         this.menu = new Menu();
+        this.commande = new Commande();
+    }
+
+    public void setCurrentUser(CompteUsager compteUsager) {
+        this.currentUser=compteUsager;
+        this.loggedIn=true;
+    }
+
+    public CompteUsager getUser(Courriel courriel){
+        for (CompteUsager comptes : this.compteUsagers) {
+            if (comptes.getCourriel().getCourriel().equals(courriel.getCourriel())){
+                if (comptes.getCourriel().getCourriel().equals("gerant")) {
+                    this.adminMode=true;
+                }
+                return comptes;
+            }
+        }
+        return null;
+    }
+
+    public boolean isUserLoggedIn() {
+        return this.loggedIn;
+    }
+
+    public void logout() {
+        this.loggedIn=false;
+        this.currentUser=null;
+        this.adminMode=false;
+    }
+
+    public void addToOrder(Mets mets) {
+        this.commande.addToOrder(mets);
+    }
+
+    public void removeFromOrder(Mets mets) {
+        this.commande.removeFromOrder(mets);
+    }
+
+    public void cancelCurrentOrder() {
+        this.commande = new Commande();
     }
 
     public static DataBase getInstance() {
@@ -52,5 +98,4 @@ public class DataBase {
         }
         return false;
     }
-
 }

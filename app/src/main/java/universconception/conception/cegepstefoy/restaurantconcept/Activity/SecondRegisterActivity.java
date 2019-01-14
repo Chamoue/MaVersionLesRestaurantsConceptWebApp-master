@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import universconception.conception.cegepstefoy.restaurantconcept.Data.DataBase;
+import universconception.conception.cegepstefoy.restaurantconcept.Model.CompteUsager;
 import universconception.conception.cegepstefoy.restaurantconcept.Model.Courriel;
 import universconception.conception.cegepstefoy.restaurantconcept.Model.Password;
 import universconception.conception.cegepstefoy.restaurantconcept.R;
@@ -54,10 +55,16 @@ public class SecondRegisterActivity extends AppCompatActivity {
     public void onRegisterButtonClicked(View view) {
         if (validations()) {
             registerUser();
+            setCurrentUser();
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("userCreated","Done");
             startActivity(intent);
         }
+    }
+
+    private void setCurrentUser() {
+        Intent intent = getIntent();
+        DataBase.getInstance().setCurrentUser(DataBase.getInstance().getUser(new Courriel(intent.getStringExtra("courriel"))));
     }
 
     public boolean fieldsAreEmpty() {

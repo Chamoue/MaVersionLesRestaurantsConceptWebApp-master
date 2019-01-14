@@ -1,28 +1,23 @@
 package universconception.conception.cegepstefoy.restaurantconcept.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class Commande {
 
-
-    private int commandeId;
-
-
     private List<Mets> metsCommande;
 
-
-    public Commande(int commandeId, List<Mets> metsCommande) {
-        this.commandeId = commandeId;
-        this.metsCommande = metsCommande;
+    public Commande() {
+        this.metsCommande = new ArrayList<>();
     }
 
-    public int getCommandeId() {
-        return commandeId;
+    public void addToOrder(Mets mets) {
+        this.metsCommande.add(mets);
     }
 
-    public void setCommandeId(int commandeId) {
-        this.commandeId = commandeId;
+    public  void removeFromOrder(Mets mets) {
+        this.metsCommande.remove(mets);
     }
 
     public List<Mets> getMetsCommande() {
